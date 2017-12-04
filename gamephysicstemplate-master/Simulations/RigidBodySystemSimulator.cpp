@@ -1,5 +1,6 @@
 #include "RigidBodySystemSimulator.h"
 #include "collisionDetect.h"
+
 struct rigidB
 {
 	Vec3 pos; 
@@ -60,20 +61,16 @@ void RigidBodySystemSimulator::drawFrame(ID3D11DeviceContext* pd3dImmediateConte
 {
 	switch (m_iTestCase)
 	{
-	case 0: break;
-	case 1:
-		DUC->setUpLighting(Vec3(0,0,0), 0.4*Vec3(1.0f, 1.0f, 1.0f), 100, 0.6*Vec3(1.0f, 1.0f, 0.0f));
-		DUC->drawSphere(Vec3(0,0,0), Vec3(0.2f, 0.2f, 0.2f));
-		/*Body.initId();
-		BodyScale.initScaling(rigidBodies[0].size.x, rigidBodies[0].size.y, rigidBodies[0].size.z);
-		BodyScale.initRotationZ(90);
-		BodyTrans.initTranslation(0.3f, 0.5f, 0.25f);
-		Body = BodyScale*BodyRot*BodyTrans;
+	case 0:
 		DUC->setUpLighting(Vec3(), 0.4*Vec3(1, 1, 1), 100, 0.6*Vec3(1, 1, 0));
-		DUC->drawRigidBody(Body);*/
+		DUC->drawSphere(Vec3(0.5f, 0,0), Vec3(0.025f, 0.025f, 0.025f));
+
 		break;
-	case 2: break;
-	case 3: break;
+	case 1:
+		DUC->setUpLighting(Vec3(1,1,1), Vec3(1, 1, 1), 100, Vec3(1, 1, 0));
+		DUC->drawSphere(Vec3(0,0,0), Vec3(0.25f, 0.25f, 0.25f));
+
+		break;
 	}
 }
 
