@@ -61,16 +61,16 @@ void RigidBodySystemSimulator::drawFrame(ID3D11DeviceContext* pd3dImmediateConte
 {
 	switch (m_iTestCase)
 	{
-	case 0:
-		DUC->setUpLighting(Vec3(), 0.4*Vec3(1, 1, 1), 100, 0.6*Vec3(1, 1, 0));
-		DUC->drawSphere(Vec3(0.5f, 0,0), Vec3(0.025f, 0.025f, 0.025f));
+	//case 0:
+	//	DUC->setUpLighting(Vec3(), 0.4*Vec3(1, 1, 1), 100, 0.6*Vec3(1, 1, 0));
+	//	DUC->drawSphere(Vec3(0.5f, 0,0), Vec3(0.025f, 0.025f, 0.025f));
 
-		break;
-	case 1:
-		DUC->setUpLighting(Vec3(1,1,1), Vec3(1, 1, 1), 100, Vec3(1, 1, 0));
-		DUC->drawSphere(Vec3(0,0,0), Vec3(0.25f, 0.25f, 0.25f));
+	//	break;
+	//case 1:
+	//	DUC->setUpLighting(Vec3(1,1,1), Vec3(1, 1, 1), 100, Vec3(1, 1, 0));
+	//	DUC->drawSphere(Vec3(0,0,0), Vec3(0.25f, 0.25f, 0.25f));
 
-		break;
+	//	break;
 	}
 }
 
@@ -127,6 +127,7 @@ void RigidBodySystemSimulator::notifyCaseChanged(int testCase)
 		rot.initRotationZ(90);
 
 		setOrientationOf(0, rotMatToQuat(rot));
+		L = Vec3(0, 0, 0);
 		break;
 	case 2:
 		rigidBodies.clear();
@@ -139,7 +140,7 @@ void RigidBodySystemSimulator::notifyCaseChanged(int testCase)
 
 void RigidBodySystemSimulator::externalForcesCalculations(float timeElapsed)
 {
-
+	
 }
 
 void RigidBodySystemSimulator::simulateTimestep(float timeStep)
@@ -148,6 +149,28 @@ void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 	{
 	case 0: break;
 	case 1:
+		f = m_externalForce;
+		q = cross(rigidBodies[0].pos, f);
+
+		rigidBodies[0].pos += timeStep*rigidBodies[0].lVel;
+		rigidBodies[0].lVel += timeStep*f / rigidBodies[0].m;
+
+		rot = rigidBodies[0].r.getRotMat();
+		L += timeStep*q; 
+
+		I_inv.initId();
+		I_inv.value[0][0] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.y, 2) + pow(rigidBodies[0].size.z, 2)));
+		I_inv.value[1][1] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.z, 2)));
+		I_inv.value[2][2] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.y, 2)));
+		I_inv.value[3][3] = 0;
+		I_inv.inverse();
+
+		newI_inv = rigidBodies[0].r.getRotMat().operator*(I_inv.operator*(rigidBodies[0].r.getRotMat().inverse()));
+
+		rigidBodies[0].wVel = newI_inv.operator*(L);
+
+		worldPos = rigidBodies[0].pos + rigidBodies[0].r.getRotMat().operator*(rigidBodies[0].pos);
+		worldVel = rigidBodies[0].lVel + cross(rigidBodies[0].wVel, rigidBodies[0].pos);
 		
 		break;
 	case 2: break;
