@@ -47,7 +47,7 @@ const char * RigidBodySystemSimulator::getTestCasesStr()
 
 void RigidBodySystemSimulator::initUI(DrawingUtilitiesClass * DUC)
 {
-
+	this->DUC = DUC;
 }
 
 void RigidBodySystemSimulator::reset()
@@ -61,16 +61,19 @@ void RigidBodySystemSimulator::drawFrame(ID3D11DeviceContext* pd3dImmediateConte
 {
 	switch (m_iTestCase)
 	{
-	//case 0:
-	//	DUC->setUpLighting(Vec3(), 0.4*Vec3(1, 1, 1), 100, 0.6*Vec3(1, 1, 0));
-	//	DUC->drawSphere(Vec3(0.5f, 0,0), Vec3(0.025f, 0.025f, 0.025f));
+	case 0:
+		DUC->setUpLighting(Vec3(), 0.4*Vec3(1, 1, 1), 100, 0.6*Vec3(1, 1, 0));
+		DUC->drawSphere(Vec3(0.5f, 0,0), Vec3(0.025f, 0.025f, 0.025f));
 
-	//	break;
-	//case 1:
-	//	DUC->setUpLighting(Vec3(1,1,1), Vec3(1, 1, 1), 100, Vec3(1, 1, 0));
-	//	DUC->drawSphere(Vec3(0,0,0), Vec3(0.25f, 0.25f, 0.25f));
-
-	//	break;
+		break;
+	case 1:
+		DUC->setUpLighting(Vec3(), 0.3*Vec3(1, 1, 1), 100, 0.9*Vec3(1, 1, 0));
+		BodyRot = rigidBodies[0].r.getRotMat();
+		BodyTrans.initTranslation(rigidBodies[0].pos.x, rigidBodies[0].pos.y, rigidBodies[0].pos.z);
+		BodyScale.initScaling(0.2);
+		Body = BodyScale* BodyRot * BodyTrans;
+		DUC->drawRigidBody(Body);
+		break;
 	}
 }
 
@@ -140,7 +143,20 @@ void RigidBodySystemSimulator::notifyCaseChanged(int testCase)
 
 void RigidBodySystemSimulator::externalForcesCalculations(float timeElapsed)
 {
-	
+	Vec3 pullforce(0, 0, 0);
+	Point2D mouseDiff;
+	mouseDiff.x = m_trackmouse.x - m_oldtrackmouse.x;
+	mouseDiff.y = m_trackmouse.y - m_oldtrackmouse.y;
+	if (mouseDiff.x != 0 || mouseDiff.y != 0)
+	{
+		Mat4 worldViewInv = Mat4(DUC->g_camera.GetWorldMatrix() * DUC->g_camera.GetViewMatrix());
+		worldViewInv = worldViewInv.inverse();
+		Vec3 forceView = Vec3((float)mouseDiff.x, (float)-mouseDiff.y, 0);
+		Vec3 forceWorld = worldViewInv.transformVectorNormal(forceView);
+		float forceScale = 0.03f;
+		pullforce = pullforce + (forceWorld * forceScale);
+	}
+	m_externalForce = pullforce;
 }
 
 void RigidBodySystemSimulator::simulateTimestep(float timeStep)
@@ -149,7 +165,7 @@ void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 	{
 	case 0: break;
 	case 1:
-		f = m_externalForce;
+		f = m_externalForce + Vec3(0, -9.81*rigidBodies[0].m, 0);
 		q = cross(rigidBodies[0].pos, f);
 
 		rigidBodies[0].pos += timeStep*rigidBodies[0].lVel;
@@ -179,6 +195,8 @@ void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 	}
 	
 }
+
+
 
 void RigidBodySystemSimulator::onClick(int x, int y)
 {
