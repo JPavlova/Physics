@@ -11,13 +11,15 @@ c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisi
 c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(259): warning C4018: '<': signed/unsigned mismatch
 c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(282): warning C4018: '<': signed/unsigned mismatch
 c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(307): warning C4018: '<': signed/unsigned mismatch
-c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(87): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(128): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(243): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
-c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(243): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(117): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(163): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(173): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(178): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(330): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(330): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
 c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\quaternion.h(67): warning C4244: 'argument': conversion from 'const GamePhysics::Real' to 'float', possible loss of data
   c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\quaternion.h(66): note: while compiling class template member function 'GamePhysics::matrix4x4<double> GamePhysics::Quaternion<GamePhysics::Real>::getRotMat(void) const'
-  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(71): note: see reference to function template instantiation 'GamePhysics::matrix4x4<double> GamePhysics::Quaternion<GamePhysics::Real>::getRotMat(void) const' being compiled
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(86): note: see reference to function template instantiation 'GamePhysics::matrix4x4<double> GamePhysics::Quaternion<GamePhysics::Real>::getRotMat(void) const' being compiled
   c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(9): note: see reference to class template instantiation 'GamePhysics::Quaternion<GamePhysics::Real>' being compiled
 c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(204): warning C4244: 'argument': conversion from 'const GamePhysics::Real' to 'float', possible loss of data
   c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(203): note: while compiling class template member function 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const'
@@ -29,5 +31,5 @@ c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\ma
   c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(379): note: see reference to class template instantiation 'GamePhysics::matrix4x4<double>' being compiled
 c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(1092): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
-  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(120): note: see reference to function template instantiation 'std::ostream &GamePhysics::operator <<<GamePhysics::Real>(std::ostream &,const GamePhysics::vector3Dim<GamePhysics::Real> &)' being compiled
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\rigidbodysystemsimulator.cpp(155): note: see reference to function template instantiation 'std::ostream &GamePhysics::operator <<<GamePhysics::Real>(std::ostream &,const GamePhysics::vector3Dim<GamePhysics::Real> &)' being compiled
   Demo_2015.vcxproj -> C:\Unizeug\Jenias Physics\Physics\gamephysicstemplate-master\Win32\Debug\Simulations.lib

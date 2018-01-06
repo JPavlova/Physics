@@ -48,6 +48,21 @@ const char * RigidBodySystemSimulator::getTestCasesStr()
 void RigidBodySystemSimulator::initUI(DrawingUtilitiesClass * DUC)
 {
 	this->DUC = DUC;
+	switch (m_iTestCase)
+	{
+	case 0: break; 
+	case 1: 
+		TwAddVarRW(DUC->g_pTweakBar, "Borders", TW_TYPE_BOOLCPP, &borders, "");
+		break;
+	case 2: 
+		TwAddVarRW(DUC->g_pTweakBar, "Borders", TW_TYPE_BOOLCPP, &borders, "");
+		break; 
+	case 3: 
+		TwAddVarRW(DUC->g_pTweakBar, "Borders", TW_TYPE_BOOLCPP, &borders, "");
+		break;
+	default: break;
+
+	}
 }
 
 void RigidBodySystemSimulator::reset()
@@ -74,6 +89,21 @@ void RigidBodySystemSimulator::drawFrame(ID3D11DeviceContext* pd3dImmediateConte
 		Body = BodyScale* BodyRot * BodyTrans;
 		DUC->drawRigidBody(Body);
 		break;
+	case 2: 
+		DUC->setUpLighting(Vec3(), 0.3*Vec3(1, 1, 1), 100, 0.9*Vec3(1, 1, 0)); 
+		BodyRot = rigidBodies[0].r.getRotMat();
+		BodyTrans.initTranslation(rigidBodies[0].pos.x, rigidBodies[0].pos.y, rigidBodies[0].pos.z);
+		BodyScale.initScaling(rigidBodies[0].size.x, rigidBodies[0].size.y, rigidBodies[0].size.z);
+		Body = BodyScale* BodyRot * BodyTrans;
+		DUC->drawRigidBody(Body);
+
+		DUC->setUpLighting(Vec3(), 0.3*Vec3(1, 1, 1), 100, 0.9*Vec3(1, 0, 0));
+		BodyRot = rigidBodies[1].r.getRotMat();
+		BodyTrans.initTranslation(rigidBodies[1].pos.x, rigidBodies[1].pos.y, rigidBodies[1].pos.z);
+		BodyScale.initScaling(rigidBodies[1].size.x, rigidBodies[1].size.y, rigidBodies[1].size.z);
+		Body = BodyScale* BodyRot * BodyTrans;
+		DUC->drawRigidBody(Body);
+		break; 
 	}
 }
 
@@ -94,6 +124,11 @@ void RigidBodySystemSimulator::notifyCaseChanged(int testCase)
 		poi = rigidBodies[0].pos - Vec3(0.3f, 0.5f, 0.25f);
 		q = cross(poi, f);
 		L = { 0,0,0 };
+
+		if (borders)
+		{
+			checkForBorders(0);
+		}
 
 		rigidBodies[0].pos = rigidBodies[0].pos + 2 * rigidBodies[0].lVel;
 		rigidBodies[0].lVel = rigidBodies[0].lVel + 2 * f / 2;
@@ -134,6 +169,17 @@ void RigidBodySystemSimulator::notifyCaseChanged(int testCase)
 		break;
 	case 2:
 		rigidBodies.clear();
+
+		addRigidBody(Vec3(0.25f, 0, 0), Vec3(0.25f, 0.25f, 0.25f), 1.5f); 
+		rot.initRotationX(0); 
+		setOrientationOf(0, rotMatToQuat(rot)); 
+		rigidBodies[0].lVel = Vec3(0.25f, 0, 0);
+
+		addRigidBody(Vec3(-0.25, 0, 0), Vec3(0.25f, 0.25f, 0.25f), 2.5f); 
+		rot.initRotationXYZ(45, 45, 0); 
+		setOrientationOf(0, rotMatToQuat(rot));
+		rigidBodies[0].lVel = Vec3(0.25f, 0, 0);
+
 		break;
 	case 3:
 		rigidBodies.clear();
@@ -165,10 +211,14 @@ void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 	{
 	case 0: break;
 	case 1:
-		f = m_externalForce + Vec3(0, -9.81*rigidBodies[0].m, 0);
+		f = m_externalForce; //+ Vec3(0, -9.81*rigidBodies[0].m, 0);
 		q = cross(rigidBodies[0].pos, f);
 
 		rigidBodies[0].pos += timeStep*rigidBodies[0].lVel;
+		if (borders)
+		{
+			checkForBorders(0);
+		}
 		rigidBodies[0].lVel += timeStep*f / rigidBodies[0].m;
 
 		rot = rigidBodies[0].r.getRotMat();
@@ -185,7 +235,9 @@ void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 
 		rigidBodies[0].wVel = newI_inv.operator*(L);
 
+
 		worldPos = rigidBodies[0].pos + rigidBodies[0].r.getRotMat().operator*(rigidBodies[0].pos);
+
 		worldVel = rigidBodies[0].lVel + cross(rigidBodies[0].wVel, rigidBodies[0].pos);
 		
 		break;
@@ -196,7 +248,40 @@ void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 	
 }
 
+void RigidBodySystemSimulator::checkForBorders(int rgdNum)
+{
+	int i = rgdNum;
+	if (rigidBodies[i].pos.X > 0.5f)
+	{
+		rigidBodies[i].pos.X = 0.5f;
 
+	}
+	if (rigidBodies[i].pos.X < -0.5f)
+	{
+		rigidBodies[i].pos.X = -0.5f;
+	}
+
+	if (rigidBodies[i].pos.Y > 0.5f)
+	{
+		rigidBodies[i].pos.Y = 0.5f;
+
+	}
+	if (rigidBodies[i].pos.Y < -0.5f)
+	{
+		rigidBodies[i].pos.Y = -0.5f;
+	}
+
+	if (rigidBodies[i].pos.Z > 0.5f)
+	{
+		rigidBodies[i].pos.Z = 0.5f;
+
+	}
+	if (rigidBodies[i].pos.Z < -0.5f)
+	{
+		rigidBodies[i].pos.Z = -0.5f;
+	}
+
+}
 
 void RigidBodySystemSimulator::onClick(int x, int y)
 {

@@ -460,46 +460,6 @@ void MassSpringSystemSimulator::externalForcesCalculations(float timeElapsed)
 		pullforce = pullforce + (forceWorld * forceScale);
 	}
 	m_externalForce = pullforce;
-	//Point2D mouseDiff;
-	//Vec3 tmp_v;
-	//float tmp;
-	//mouseDiff.x = m_trackmouse.x - m_oldtrackmouse.x;
-	//mouseDiff.y = m_trackmouse.y - m_oldtrackmouse.y;
-	//if (mouseDiff.x != 0 || mouseDiff.y != 0)
-	//{
-	//
-	//	Mat4 cameraPos = DUC->g_camera.GetWorldMatrix();
-	//	cameraPos = cameraPos.inverse();
-	//	Mat4 viewMatr = DUC->g_camera.GetViewMatrix();
-	//	viewMatr = viewMatr.inverse();
-
-	//	Mat4 worldViewInv = cameraPos*viewMatr;
-
-	//	Vec3 inputView = Vec3((float)mouseDiff.x, (float)-mouseDiff.y, 0);
-	//	Vec3 inputWorld = worldViewInv.transformVectorNormal(inputView);
-	//	// find a proper scale!
-	//	float inputScale = 0.9f;
-	//	inputWorld = inputWorld * inputScale;
-
-	//	for (int i = 0; i < points.size(); i++)
-	//	{
-	//		tmp_v = crossProduct(inputView - inputWorld, inputWorld - points[i].pos);
-	//		tmp = sqrtf(tmp_v.x*tmp_v.x + tmp_v.y*tmp_v.y + tmp_v.z*tmp_v.z);
-	//		tmp_v = inputView - inputWorld;
-	//		tmp = tmp / sqrtf(tmp_v.x*tmp_v.x + tmp_v.y*tmp_v.y + tmp_v.z*tmp_v.z);
-
-	//		if (tmp < 0.2f)
-	//		{
-	//			cout << "Hit: " << i << "\n";
-
-	//		}
-	//	}
-	//} 
-	//else
-	//{
-	//	
-	//}
-	
 }
 
 void MassSpringSystemSimulator::simulateTimestep(float timeStep)

@@ -33,6 +33,7 @@ public:
 	void setVelocityOf(int i, Vec3 velocity);
 
 	Quat rotMatToQuat(Mat4 m);
+	void checkForBorders(int rgbNum);
 
 private:
 	// Attributes
@@ -44,5 +45,7 @@ private:
 	Point2D m_mouse;
 	Point2D m_trackmouse;
 	Point2D m_oldtrackmouse;
+
+	bool borders;
 	};
 #endif
