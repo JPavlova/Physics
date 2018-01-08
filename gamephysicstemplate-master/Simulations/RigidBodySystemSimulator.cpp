@@ -1,5 +1,5 @@
 #include "RigidBodySystemSimulator.h"
-#include "collisionDetect.h"
+
 
 struct rigidB
 {
@@ -166,6 +166,13 @@ void RigidBodySystemSimulator::notifyCaseChanged(int testCase)
 		rot.initRotationZ(90);
 
 		setOrientationOf(0, rotMatToQuat(rot));
+		rigidBodies[0].lVel = Vec3(0.25f, 0, 0);
+		rigidBodies[0].I_inv.initId();
+		rigidBodies[0].I_inv.value[0][0] = (1.0f / 12.0f * rigidBodies[0].m *(pow(rigidBodies[0].size.y, 2) + pow(rigidBodies[0].size.z, 2)));
+		rigidBodies[0].I_inv.value[1][1] = (1.0f / 12.0f * rigidBodies[0].m *(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.z, 2)));
+		rigidBodies[0].I_inv.value[2][2] = (1.0f / 12.0f * rigidBodies[0].m *(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.y, 2)));
+		rigidBodies[0].I_inv.value[3][3] = 0;
+		rigidBodies[0].I_inv.inverse();
 		L_tmp = Vec3(0, 0, 0);
 		break;
 	case 2:
@@ -174,12 +181,23 @@ void RigidBodySystemSimulator::notifyCaseChanged(int testCase)
 		addRigidBody(Vec3(0.25f, 0, 0), Vec3(0.25f, 0.25f, 0.25f), 1.5f); 
 		rot.initRotationX(0); 
 		setOrientationOf(0, rotMatToQuat(rot)); 
-		rigidBodies[0].lVel = Vec3(0.25f, 0, 0);
+		rigidBodies[0].lVel = Vec3(-0.25f, 0, 0);
+		rigidBodies[0].I_inv.initId();
+		rigidBodies[0].I_inv.value[0][0] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.y, 2) + pow(rigidBodies[0].size.z, 2)));
+		rigidBodies[0].I_inv.value[1][1] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.z, 2)));
+		rigidBodies[0].I_inv.value[2][2] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.y, 2)));
+		rigidBodies[0].I_inv.value[3][3] = 0;
+		rigidBodies[0].I_inv.inverse();
 
 		addRigidBody(Vec3(-0.25, 0, 0), Vec3(0.25f, 0.25f, 0.25f), 2.5f); 
 		rot.initRotationXYZ(45, 45, 0); 
 		setOrientationOf(1, rotMatToQuat(rot));
-		rigidBodies[1].lVel = Vec3(-0.25f, 0, 0);
+		rigidBodies[1].lVel = Vec3(0.25f, 0, 0);
+		rigidBodies[1].I_inv.value[0][0] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.y, 2) + pow(rigidBodies[0].size.z, 2)));
+		rigidBodies[1].I_inv.value[1][1] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.z, 2)));
+		rigidBodies[1].I_inv.value[2][2] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.y, 2)));
+		rigidBodies[1].I_inv.value[3][3] = 0;
+		rigidBodies[1].I_inv.inverse();;
 
 		break;
 	case 3:
@@ -222,17 +240,17 @@ void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 		}
 		rigidBodies[0].lVel += timeStep*f / rigidBodies[0].m;
 
-		rot = rigidBodies[0].r.getRotMat();
+		rigidBodies[0].r = rigidBodies[0].r + timeStep / 2 * Quat(0, rigidBodies[0].wVel.x, rigidBodies[0].wVel.y, rigidBodies[0].wVel.z)*rigidBodies[0].r;
 		L_tmp += timeStep*q; 
 
-		I_inv_tmp.initId();
-		I_inv_tmp.value[0][0] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.y, 2) + pow(rigidBodies[0].size.z, 2)));
-		I_inv_tmp.value[1][1] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.z, 2)));
-		I_inv_tmp.value[2][2] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.y, 2)));
-		I_inv_tmp.value[3][3] = 0;
-		I_inv_tmp.inverse();
+		//I_inv_tmp.initId();
+		//I_inv_tmp.value[0][0] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.y, 2) + pow(rigidBodies[0].size.z, 2)));
+		//I_inv_tmp.value[1][1] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.z, 2)));
+		//I_inv_tmp.value[2][2] = (1.0f / 12.0f * rigidBodies[0].m*(pow(rigidBodies[0].size.x, 2) + pow(rigidBodies[0].size.y, 2)));
+		//I_inv_tmp.value[3][3] = 0;
+		//I_inv_tmp.inverse();
 
-		newI_inv = rigidBodies[0].r.getRotMat().operator*(I_inv_tmp.operator*(rigidBodies[0].r.getRotMat().inverse()));
+		rigidBodies[0].I_inv = rigidBodies[0].r.getRotMat().operator*(rigidBodies[0].I_inv.operator*(rigidBodies[0].r.getRotMat().inverse()));
 
 		rigidBodies[0].wVel = newI_inv.operator*(L_tmp);
 
@@ -244,6 +262,25 @@ void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 		break;
 	case 2:
 		//Calculate All Movement first, then check for collisison 
+		for (int i = 0; i < getNumberOfRigidBodies(); i++)
+		{
+			//External Forces
+			f = m_externalForce;
+			q = cross(rigidBodies[i].pos, f); 
+
+			//Euler Step
+			rigidBodies[i].pos += timeStep*rigidBodies[i].lVel;
+			rigidBodies[i].lVel += timeStep*f / rigidBodies[i].m;
+
+			//Rotation & Stuff
+			rigidBodies[i].r = rigidBodies[i].r + timeStep / 2 * Quat(0, rigidBodies[i].wVel.x, rigidBodies[i].wVel.y, rigidBodies[i].wVel.z)*rigidBodies[i].r;
+
+			rigidBodies[i].L += timeStep*q;
+			rigidBodies[i].I_inv = rigidBodies[i].r.getRotMat() * rigidBodies[i].I_inv * rigidBodies[i].r.getRotMat().inverse();
+			rigidBodies[i].wVel = rigidBodies[i].I_inv * rigidBodies[i].L;
+		}
+
+		checkForCollision();
 		break;
 	case 3: break;
 	default: break;
@@ -255,20 +292,26 @@ bool RigidBodySystemSimulator::checkForCollision()
 {
 	CollisionInfo col; 
 	Mat4 BodyA, BodyB;
+	Mat4 bodyR, bodyT, bodyS;
 
 	for (int i = 0; i < rigidBodies.size(); i++)
 	{
-		BodyRot = rigidBodies[i].r.getRotMat();
-		BodyTrans.initTranslation(rigidBodies[i].pos.x, rigidBodies[i].pos.y, rigidBodies[i].pos.z);
-		BodyScale.initScaling(rigidBodies[i].size.x, rigidBodies[i].size.y, rigidBodies[i].size.z);
-		BodyA = BodyScale* BodyRot * BodyTrans;
+		bodyR = rigidBodies[i].r.getRotMat();
+		bodyT.initTranslation(rigidBodies[i].pos.x, rigidBodies[i].pos.y, rigidBodies[i].pos.z);
+		bodyS.initScaling(rigidBodies[i].size.x, rigidBodies[i].size.y, rigidBodies[i].size.z);
+		BodyA = bodyS* bodyR * bodyT;
 
-		for (int j = 0; j < rigidBodies.size(); i++)
+		for (int j = 0; j < rigidBodies.size(); j++)
 		{
-			BodyRot = rigidBodies[j].r.getRotMat();
-			BodyTrans.initTranslation(rigidBodies[j].pos.x, rigidBodies[j].pos.y, rigidBodies[j].pos.z);
-			BodyScale.initScaling(rigidBodies[j].size.x, rigidBodies[j].size.y, rigidBodies[j].size.z);
-			BodyB = BodyScale* BodyRot * BodyTrans;
+			if (i == j)
+			{
+				break;
+			}
+
+			bodyR = rigidBodies[j].r.getRotMat();
+			bodyT.initTranslation(rigidBodies[j].pos.x, rigidBodies[j].pos.y, rigidBodies[j].pos.z);
+			bodyS.initScaling(rigidBodies[j].size.x, rigidBodies[j].size.y, rigidBodies[j].size.z);
+			BodyB = bodyS* bodyR * bodyT;
 
 			col = checkCollisionSAT(BodyA, BodyB);
 
@@ -278,27 +321,31 @@ bool RigidBodySystemSimulator::checkForCollision()
 			}
 		}
 	}
+
+	return true;
 }
 
-void RigidBodySystemSimulator::calculateImpulse(int a, int b, CollisionInfo col)
+void RigidBodySystemSimulator::calculateImpulse(int a, int b, CollisionInfo coll)
 {
 	float c = 0.1f;
-	float v_rel = dot(col.normalWorld, (rigidBodies[a].lVel - rigidBodies[b].lVel));
+	float v_rel;
+	Vec3 n = (rigidBodies[a].lVel - rigidBodies[b].lVel);
+	v_rel = dot(coll.normalWorld, n);
 	
 	//if collision
 	if (v_rel < 0)
 	{
-		float J = -(1 + c)* dot((rigidBodies[a].lVel - rigidBodies[b].lVel), col.normalWorld);
+		float J = -(1 + c)* dot((rigidBodies[a].lVel - rigidBodies[b].lVel), coll.normalWorld);
 		J = J / (1 / rigidBodies[a].m) + (1 / rigidBodies[b].m) +
-			dot(cross(rigidBodies[a].I_inv* (cross(rigidBodies[a].pos, col.normalWorld)), rigidBodies[a].pos) +
-			   (cross(rigidBodies[b].I_inv * (cross(rigidBodies[b].pos, col.normalWorld)), rigidBodies[b].pos)),
-			    col.normalWorld);
+			dot(cross(rigidBodies[a].I_inv* (cross(rigidBodies[a].pos, coll.normalWorld)), rigidBodies[a].pos) +
+			   (cross(rigidBodies[b].I_inv * (cross(rigidBodies[b].pos, coll.normalWorld)), rigidBodies[b].pos)),
+			    coll.normalWorld);
 		
-		rigidBodies[a].lVel = rigidBodies[a].lVel + J*col.normalWorld / rigidBodies[a].m;
-		rigidBodies[b].lVel = rigidBodies[b].lVel - J*col.normalWorld / rigidBodies[b].m;
+		rigidBodies[a].lVel = rigidBodies[a].lVel + J*coll.normalWorld / rigidBodies[a].m;
+		rigidBodies[b].lVel = rigidBodies[b].lVel - J*coll.normalWorld / rigidBodies[b].m;
 
-		rigidBodies[a].L = rigidBodies[a].L + cross(rigidBodies[a].pos, J*col.normalWorld);
-		rigidBodies[b].L = rigidBodies[b].L - cross(rigidBodies[b].pos, J*col.normalWorld);
+		rigidBodies[a].L = rigidBodies[a].L + cross(rigidBodies[a].pos, J*coll.normalWorld);
+		rigidBodies[b].L = rigidBodies[b].L - cross(rigidBodies[b].pos, J*coll.normalWorld);
 	}
 }
 
