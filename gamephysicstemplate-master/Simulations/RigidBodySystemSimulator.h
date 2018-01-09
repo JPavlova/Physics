@@ -36,7 +36,9 @@ public:
 	Quat rotMatToQuat(Mat4 m);
 	void checkForBorders(int rgbNum);
 	bool checkForCollision();
+	bool checkForWallCollision();
 	void calculateImpulse(int a, int b, CollisionInfo col);
+	void calculateImpulseWall(int b, CollisionInfo col);
 
 private:
 	// Attributes
