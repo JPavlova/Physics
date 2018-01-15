@@ -143,7 +143,7 @@ void RigidBodySystemSimulator::drawFrame(ID3D11DeviceContext* pd3dImmediateConte
 		DUC->setUpLighting(Vec3(), 0.3*Vec3(1, 1, 1), 100, 0.9*Vec3(1, 1, 1));
 		BodyRot.initRotationXYZ(0, 0, 0);
 		BodyTrans.initTranslation(0, -0.6f, 0);
-		BodyScale.initScaling(5.0f, 0.1f, 5.0f);
+		BodyScale.initScaling(5.0f, 0.01f, 5.0f);
 		Body = BodyScale * BodyRot * BodyTrans;
 		DUC->drawRigidBody(Body);
 
@@ -400,30 +400,30 @@ void RigidBodySystemSimulator::simulateTimestep(float timeStep)
 
 bool RigidBodySystemSimulator::checkForWallCollision()
 {
-	CollisionInfo col;
+	CollisionInfo col_;
 	Mat4 wall, wallR, wallT, wallS;
 	Mat4 BodyA, bodyR, bodyT, bodyS;
 
 	wallR.initRotationX(180);
-	wallR.initTranslation(0, -0.6f, 0); 
+	wallT.initTranslation(0, -0.6f, 0); 
 	wallS.initScaling(5.0f, 0.1f, 5.0f);
 	wall = wallS * wallR * wallT; 
 
 	cout << "Collision with Wall \n";
 
-	for (int i = 0; i < rigidBodies.size(); i++)
+	for (int i = 0; i <  getNumberOfRigidBodies(); i++)
 	{
 		bodyR = rigidBodies[i].r.getRotMat();
 		bodyT.initTranslation(rigidBodies[i].pos.x, rigidBodies[i].pos.y, rigidBodies[i].pos.z);
 		bodyS.initScaling(rigidBodies[i].size.x, rigidBodies[i].size.y, rigidBodies[i].size.z);
 		BodyA = bodyS* bodyR * bodyT;
 
-		col = checkCollisionSAT(BodyA, wall);
+		col_ = checkCollisionSAT(BodyA, wall);
 
-		if (col.isValid)
+		if (col_.isValid)
 		{
 			cout << "Collision is Valid \n";
-			calculateImpulseWall(i, col);
+			calculateImpulseWall(i, col_);
 		}
 	}
 
@@ -433,8 +433,8 @@ bool RigidBodySystemSimulator::checkForWallCollision()
 void RigidBodySystemSimulator::calculateImpulseWall(int b, CollisionInfo col)
 {
 	float c = 0.1f;
-	Vec3 z = Vec3(0, -0.6f, 0);
-	float v_rel = dot(col.normalWorld, (z - rigidBodies[b].pos));
+	Vec3 z = Vec3(0, 0, 0);
+	float v_rel = dot(col.normalWorld, (z - rigidBodies[b].lVel));
 
 	//if collision
 	if (v_rel < 0)
@@ -443,8 +443,8 @@ void RigidBodySystemSimulator::calculateImpulseWall(int b, CollisionInfo col)
 		J = J / (1 / rigidBodies[b].m) +
 			dot((cross(rigidBodies[b].I_inv * (cross(rigidBodies[b].pos, col.normalWorld)), rigidBodies[b].pos)), col.normalWorld);
 
-		rigidBodies[b].lVel = rigidBodies[b].lVel + J*col.normalWorld / rigidBodies[b].m;
-		rigidBodies[b].L = rigidBodies[b].L + cross(rigidBodies[b].pos, J*col.normalWorld);
+		rigidBodies[b].lVel = rigidBodies[b].lVel - J*col.normalWorld / rigidBodies[b].m;
+		rigidBodies[b].L = rigidBodies[b].L - cross(rigidBodies[b].pos, J*col.normalWorld);
 		cout << J << "\n";
 	}
 
