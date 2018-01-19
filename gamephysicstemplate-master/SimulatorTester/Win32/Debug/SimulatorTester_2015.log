@@ -1,0 +1,38 @@
+﻿  PublicRigidBodiesTests.cpp
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): warning C4005: 'NOMINMAX': macro redefinition
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): note: command-line arguments:  see previous definition of 'NOMINMAX'
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(28): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(28): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(125): warning C4018: '<': signed/unsigned mismatch
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(127): warning C4018: '<': signed/unsigned mismatch
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(144): warning C4018: '<': signed/unsigned mismatch
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(230): warning C4018: '<': signed/unsigned mismatch
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(259): warning C4018: '<': signed/unsigned mismatch
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(282): warning C4018: '<': signed/unsigned mismatch
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\collisiondetect.h(307): warning C4018: '<': signed/unsigned mismatch
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicrigidbodiestests.cpp(13): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicrigidbodiestests.cpp(15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicrigidbodiestests.cpp(24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicrigidbodiestests.cpp(58): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicrigidbodiestests.cpp(79): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(204): warning C4244: 'argument': conversion from 'const GamePhysics::Real' to 'float', possible loss of data
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(203): note: while compiling class template member function 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const'
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(285): note: see reference to function template instantiation 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const' being compiled
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(859): note: see reference to class template instantiation 'GamePhysics::vector3Dim<GamePhysics::Real>' being compiled
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\matrixbase.h(777): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\matrixbase.h(773): note: while compiling class template member function 'DirectX::XMMATRIX GamePhysics::matrix4x4<double>::toDirectXMatrix(void)'
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(380): note: see reference to function template instantiation 'DirectX::XMMATRIX GamePhysics::matrix4x4<double>::toDirectXMatrix(void)' being compiled
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(379): note: see reference to class template instantiation 'GamePhysics::matrix4x4<double>' being compiled
+  PublicMassSpringSystemTests.cpp
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): warning C4005: 'NOMINMAX': macro redefinition
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): note: command-line arguments:  see previous definition of 'NOMINMAX'
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicmassspringsystemtests.cpp(18): error C2440: 'initializing': cannot convert from 'void' to 'int'
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicmassspringsystemtests.cpp(18): note: Expressions of type void cannot be converted to other types
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicmassspringsystemtests.cpp(19): error C2440: 'initializing': cannot convert from 'void' to 'int'
+  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicmassspringsystemtests.cpp(19): note: Expressions of type void cannot be converted to other types
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicmassspringsystemtests.cpp(57): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicmassspringsystemtests.cpp(72): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicmassspringsystemtests.cpp(99): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulatortester\publicmassspringsystemtests.cpp(114): warning C4305: 'argument': truncation from 'double' to 'float'
+  Generating Code...
