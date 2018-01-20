@@ -10,52 +10,132 @@ std::function<float(float)> SphereSystemSimulator::m_Kernels[5] = {
 
 // SphereSystemSimulator member functions
 
+int diffSize;
+
 SphereSystemSimulator::SphereSystemSimulator()
 {
-
+	m_iTestCase = 0;
+	m_iNumSpheres = 10;
+	m_fRadius = 0.2f;
+	m_fMass = 2.0f;
 }
 
 const char* SphereSystemSimulator::getTestCasesStr()
 {
-
+	return "Force Brutale, Demo2, Demo3";
 }
 
 void SphereSystemSimulator::initUI(DrawingUtilitiesClass * DUC)
 {
-
+	this->DUC = DUC;
+	switch (m_iTestCase)
+	{
+	case 0:
+		TwAddVarRW(DUC->g_pTweakBar, "Number of Spheres", TW_TYPE_INT32, &m_iNumSpheres, "" );
+		TwAddVarRW(DUC->g_pTweakBar, "Radius", TW_TYPE_FLOAT, &m_fRadius, "");
+		TwAddVarRW(DUC->g_pTweakBar, "Mass", TW_TYPE_FLOAT, &m_fMass, "");
+		break;
+	case 1: 
+		TwAddVarRW(DUC->g_pTweakBar, "Number of Spheres", TW_TYPE_INT32, &m_iNumSpheres, "");
+		TwAddVarRW(DUC->g_pTweakBar, "Radius", TW_TYPE_FLOAT, &m_fRadius, "");
+		TwAddVarRW(DUC->g_pTweakBar, "Mass", TW_TYPE_FLOAT, &m_fMass, "");
+		break; 
+	case 2: 
+		TwAddVarRW(DUC->g_pTweakBar, "Number of Spheres", TW_TYPE_INT32, &m_iNumSpheres, "");
+		TwAddVarRW(DUC->g_pTweakBar, "Radius", TW_TYPE_FLOAT, &m_fRadius, "");
+		TwAddVarRW(DUC->g_pTweakBar, "Mass", TW_TYPE_FLOAT, &m_fMass, "");
+		break;
+	}
 }
 
 void SphereSystemSimulator::reset()
 {
-
+	m_mouse.x = m_mouse.y = 0; 
+	m_trackmouse.x = m_trackmouse.y = 0;
+	m_oldtrackmouse.x = m_oldtrackmouse.y = 0;
 }
 
 void SphereSystemSimulator::drawFrame(ID3D11DeviceContext* pd3ImmediateContext)
 {
-
+	switch (m_iTestCase)
+	{
+	case 0: 
+		for (int i = 0; i < m_iNumSpheres; i++)
+		{
+			DUC->setUpLighting(Vec3(), 0.4*Vec3(1, 1, 1), 100, 0.6*Vec3(1, 1, 0));
+			DUC->drawSphere(Vec3(m_spherePos[i].x /*+i*0.1f*/, m_spherePos[i].y, m_spherePos[i].z), Vec3(m_fRadius, m_fRadius, m_fRadius));
+		}
+		break;
+	}
 }
 
 void SphereSystemSimulator::notifyCaseChanged(int testCase)
 {
+	m_iTestCase = testCase;
+	switch (m_iTestCase)
+	{
+	case 0:
+		m_iNumSpheres = 10; 
+		m_fMass = 2.0f;
+		m_fRadius = 0.02f;
 
+		break;
+	case 1: break;
+	case 2: break; 
+	default: break;
+	}
 }
 
 void SphereSystemSimulator::externalForcesCalculations(float timeElapsed)
 {
-
+	Vec3 pullforce(0, 0, 0);
+	Point2D mouseDiff;
+	mouseDiff.x = m_trackmouse.x - m_oldtrackmouse.x;
+	mouseDiff.y = m_trackmouse.y - m_oldtrackmouse.y;
+	if (mouseDiff.x != 0 || mouseDiff.y != 0)
+	{
+		Mat4 worldViewInv = Mat4(DUC->g_camera.GetWorldMatrix() * DUC->g_camera.GetViewMatrix());
+		worldViewInv = worldViewInv.inverse();
+		Vec3 forceView = Vec3((float)mouseDiff.x, (float)-mouseDiff.y, 0);
+		Vec3 forceWorld = worldViewInv.transformVectorNormal(forceView);
+		float forceScale = 0.03f;
+		pullforce = pullforce + (forceWorld * forceScale);
+	}
+	m_externalForce = pullforce;
 }
 
 void SphereSystemSimulator::simulateTimestep(float timeStep)
 {
-
+	switch (m_iTestCase)
+	{
+	case 0:
+		if (m_spherePos.size() < m_iNumSpheres)
+		{
+			diffSize = m_iNumSpheres - m_spherePos.size();
+			for (int i = 0; i < diffSize; i++)
+			{
+				m_spherePos.push_back(Vec3(0, 0, 0));
+			}
+			cout << m_spherePos.size() << "\n";
+		}
+		
+		break; 
+	case 1: break; 
+	case 2: break;
+	default: break;
+	}
 }
 
 void SphereSystemSimulator::onClick(int x, int y)
 {
-
+	m_trackmouse.x = x; 
+	m_trackmouse.y = y;
 }
 
 void SphereSystemSimulator::onMouse(int x, int y)
 {
-
+	m_oldtrackmouse.x = x;
+	m_oldtrackmouse.y = y;
+	m_trackmouse.x = x;
+	m_trackmouse.y = y;
 }

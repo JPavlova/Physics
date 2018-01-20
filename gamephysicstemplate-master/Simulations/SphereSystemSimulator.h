@@ -23,7 +23,7 @@ public:
 	
 protected:
 	// Attributes
-	Vec3 externalForce;
+	Vec3 m_externalForce;
 	Point2D m_mouse;
 	Point2D m_trackmouse;
 	Point2D m_oldtrackmouse;
@@ -36,7 +36,9 @@ protected:
 	int   m_iKernel; // index of the m_Kernels[5], more detials in SphereSystemSimulator.cpp
 	static std::function<float(float)> m_Kernels[5];
 	
-	int   m_iAccelerator; // switch between NAIVEACC and GRIDACC, (optionally, KDTREEACC, 2)
+	int   m_iAccelerator; 
+	vector<Vec3> m_spherePos;
+	// switch between NAIVEACC and GRIDACC, (optionally, KDTREEACC, 2)
 	
 	//SphereSystem * m_pSphereSystem; // add your own sphere system member!
 	// for Demo 3 only:
