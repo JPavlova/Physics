@@ -18,6 +18,7 @@ SphereSystemSimulator::SphereSystemSimulator()
 	m_iNumSpheres = 10;
 	m_fRadius = 0.2f;
 	m_fMass = 2.0f;
+	
 }
 
 const char* SphereSystemSimulator::getTestCasesStr()
@@ -63,7 +64,7 @@ void SphereSystemSimulator::drawFrame(ID3D11DeviceContext* pd3ImmediateContext)
 		for (int i = 0; i < m_iNumSpheres; i++)
 		{
 			DUC->setUpLighting(Vec3(), 0.4*Vec3(1, 1, 1), 100, 0.6*Vec3(1, 1, 0));
-			DUC->drawSphere(Vec3(m_spherePos[i].x /*+i*0.1f*/, m_spherePos[i].y, m_spherePos[i].z), Vec3(m_fRadius, m_fRadius, m_fRadius));
+			DUC->drawSphere(Vec3(m_sSphere[i].pos.x /*+i*0.1f*/, m_sSphere[i].pos.y, m_sSphere[i].pos.z), Vec3(m_fRadius, m_fRadius, m_fRadius));
 		}
 		break;
 	}
@@ -78,7 +79,6 @@ void SphereSystemSimulator::notifyCaseChanged(int testCase)
 		m_iNumSpheres = 10; 
 		m_fMass = 2.0f;
 		m_fRadius = 0.02f;
-
 		break;
 	case 1: break;
 	case 2: break; 
@@ -106,23 +106,72 @@ void SphereSystemSimulator::externalForcesCalculations(float timeElapsed)
 
 void SphereSystemSimulator::simulateTimestep(float timeStep)
 {
+	sphere s = { Vec3(0,0,0), Vec3(0,0,0) };
 	switch (m_iTestCase)
 	{
 	case 0:
-		if (m_spherePos.size() < m_iNumSpheres)
+		if (m_sSphere.size() < m_iNumSpheres)
 		{
-			diffSize = m_iNumSpheres - m_spherePos.size();
+			diffSize = m_iNumSpheres - m_sSphere.size();
 			for (int i = 0; i < diffSize; i++)
 			{
-				m_spherePos.push_back(Vec3(0, 0, 0));
+				s.pos = Vec3(-0.5f + (rand() % 10 + 1) / 10, 0 + (rand() % 10 + 1) / 20, -0.5f + +(rand() % 10 + 1) / 10);
+				
+				m_sSphere.push_back(s);
 			}
-			cout << m_spherePos.size() << "\n";
+			cout << m_sSphere.size() << "\n";
+		}
+		else if (m_sSphere.size() > m_iNumSpheres)
+		{
+			diffSize = m_sSphere.size() - m_iNumSpheres; 
+			m_sSphere._Pop_back_n(diffSize);
 		}
 		
+		//Calculate Spheres
+		for (int i = 0; i < m_iNumSpheres; i++)
+		{
+			m_fForce += Vec3(0, -9.81f*m_fMass, 0) + m_externalForce;
+			m_fAcceleration = m_fForce / m_fMass;
+
+			
+			m_sSphere[i].pos = m_sSphere[i].pos + (timeStep / 2)*m_sSphere[i].vel;
+			m_sSphere[i].vel = m_sSphere[i].vel + (timeStep / 2)*m_fAcceleration;
+
+			/*
+			m_fForce += m_sSphere[i].vel/timeStep/2;
+			m_fAcceleration = m_fForce/ m_fMass;
+			*/
+
+			m_sSphere[i].pos = m_sSphere[i].pos + timeStep*m_sSphere[i].vel;
+			m_sSphere[i].vel = m_sSphere[i].vel + timeStep*m_fAcceleration;
+		}
 		break; 
 	case 1: break; 
 	case 2: break;
 	default: break;
+	}
+}
+
+void SphereSystemSimulator::detectCollisionSimple()
+{
+	float d;
+	for (int i = 0; i < m_iNumSpheres; i++)
+	{
+		for (int j = 0; j < m_iNumSpheres; j++)
+		{
+			if (i == j)
+			{
+				break;
+			}
+			else
+			{
+				d = m_sSphere[i].pos.squaredDistanceTo(m_sSphere[j].pos);
+				if (d < 2 * m_fRadius)
+				{
+					//m_iKernel(d);
+				}
+			}
+		}
 	}
 }
 

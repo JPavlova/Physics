@@ -20,6 +20,15 @@ public:
 	void simulateTimestep(float timeStep);
 	void onClick(int x, int y);
 	void onMouse(int x, int y);
+
+	//My Functions 
+	void detectCollisionSimple();
+	void detectCollisionBoundries();
+
+	struct sphere {
+		Vec3 pos;
+		Vec3 vel;
+	};
 	
 protected:
 	// Attributes
@@ -37,7 +46,11 @@ protected:
 	static std::function<float(float)> m_Kernels[5];
 	
 	int   m_iAccelerator; 
-	vector<Vec3> m_spherePos;
+
+	
+	vector<sphere> m_sSphere;
+	Vec3 m_fForce;
+	Vec3 m_fAcceleration;
 	// switch between NAIVEACC and GRIDACC, (optionally, KDTREEACC, 2)
 	
 	//SphereSystem * m_pSphereSystem; // add your own sphere system member!
