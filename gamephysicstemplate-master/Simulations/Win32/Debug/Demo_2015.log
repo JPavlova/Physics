@@ -1,13 +1,23 @@
 ﻿  SphereSystemSimulator.cpp
-c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): warning C4005: 'NOMINMAX': macro redefinition
-  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): note: command-line arguments:  see previous definition of 'NOMINMAX'
-c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(112): warning C4018: '<': signed/unsigned mismatch
-c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(204): warning C4244: 'argument': conversion from 'const GamePhysics::Real' to 'float', possible loss of data
-  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(203): note: while compiling class template member function 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const'
-  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(285): note: see reference to function template instantiation 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const' being compiled
-  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(859): note: see reference to class template instantiation 'GamePhysics::vector3Dim<GamePhysics::Real>' being compiled
-c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\matrixbase.h(777): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\util\matrixbase.h(773): note: while compiling class template member function 'DirectX::XMMATRIX GamePhysics::matrix4x4<double>::toDirectXMatrix(void)'
-  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(380): note: see reference to function template instantiation 'DirectX::XMMATRIX GamePhysics::matrix4x4<double>::toDirectXMatrix(void)' being compiled
-  c:\unizeug\jenias physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(379): note: see reference to class template instantiation 'GamePhysics::matrix4x4<double>' being compiled
-  Demo_2015.vcxproj -> C:\Unizeug\Jenias Physics\Physics\gamephysicstemplate-master\Win32\Debug\Simulations.lib
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): warning C4005: 'NOMINMAX': macro redefinition
+  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): note: command-line arguments:  see previous definition of 'NOMINMAX'
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(113): warning C4018: '<': signed/unsigned mismatch
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(124): warning C4018: '>': signed/unsigned mismatch
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(173): warning C4244: '=': conversion from 'GamePhysics::Real' to 'float', possible loss of data
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(176): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(177): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(191): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(198): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(205): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(211): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(218): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(224): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(204): warning C4244: 'argument': conversion from 'const GamePhysics::Real' to 'float', possible loss of data
+  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(203): note: while compiling class template member function 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const'
+  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(285): note: see reference to function template instantiation 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const' being compiled
+  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(859): note: see reference to class template instantiation 'GamePhysics::vector3Dim<GamePhysics::Real>' being compiled
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\matrixbase.h(777): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\matrixbase.h(773): note: while compiling class template member function 'DirectX::XMMATRIX GamePhysics::matrix4x4<double>::toDirectXMatrix(void)'
+  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(380): note: see reference to function template instantiation 'DirectX::XMMATRIX GamePhysics::matrix4x4<double>::toDirectXMatrix(void)' being compiled
+  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(379): note: see reference to class template instantiation 'GamePhysics::matrix4x4<double>' being compiled
+  Demo_2015.vcxproj -> C:\Studium\9.Semester\_Physics\Physics\gamephysicstemplate-master\Win32\Debug\Simulations.lib

@@ -22,12 +22,14 @@ public:
 	void onMouse(int x, int y);
 
 	//My Functions 
+	void detectBoxCollision(int i);
 	void detectCollisionSimple();
 	void detectCollisionBoundries();
 
 	struct sphere {
 		Vec3 pos;
 		Vec3 vel;
+		Vec3 rep_force;
 	};
 	
 protected:

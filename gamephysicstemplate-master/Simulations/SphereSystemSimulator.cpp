@@ -76,7 +76,7 @@ void SphereSystemSimulator::notifyCaseChanged(int testCase)
 	switch (m_iTestCase)
 	{
 	case 0:
-		m_iNumSpheres = 10; 
+		m_iNumSpheres = 1; 
 		m_fMass = 2.0f;
 		m_fRadius = 0.02f;
 		break;
@@ -106,7 +106,7 @@ void SphereSystemSimulator::externalForcesCalculations(float timeElapsed)
 
 void SphereSystemSimulator::simulateTimestep(float timeStep)
 {
-	sphere s = { Vec3(0,0,0), Vec3(0,0,0) };
+	sphere s = { Vec3(0,0,0), Vec3(0,0,0), Vec3(0,0,0) };
 	switch (m_iTestCase)
 	{
 	case 0:
@@ -115,7 +115,7 @@ void SphereSystemSimulator::simulateTimestep(float timeStep)
 			diffSize = m_iNumSpheres - m_sSphere.size();
 			for (int i = 0; i < diffSize; i++)
 			{
-				s.pos = Vec3(-0.5f + (rand() % 10 + 1) / 10, 0 + (rand() % 10 + 1) / 20, -0.5f + +(rand() % 10 + 1) / 10);
+				s.pos = Vec3(0, 0.4f,0);
 				
 				m_sSphere.push_back(s);
 			}
@@ -130,21 +130,25 @@ void SphereSystemSimulator::simulateTimestep(float timeStep)
 		//Calculate Spheres
 		for (int i = 0; i < m_iNumSpheres; i++)
 		{
-			m_fForce += Vec3(0, -9.81f*m_fMass, 0) + m_externalForce;
+
+			m_fForce = Vec3(0, -9.81f*m_fMass, 0) + m_externalForce;
 			m_fAcceleration = m_fForce / m_fMass;
 
 			
 			m_sSphere[i].pos = m_sSphere[i].pos + (timeStep / 2)*m_sSphere[i].vel;
+			detectBoxCollision(i);
 			m_sSphere[i].vel = m_sSphere[i].vel + (timeStep / 2)*m_fAcceleration;
 
-			/*
-			m_fForce += m_sSphere[i].vel/timeStep/2;
+			
+			/*m_fForce += m_sSphere[i].vel/timeStep/2;
 			m_fAcceleration = m_fForce/ m_fMass;
 			*/
 
 			m_sSphere[i].pos = m_sSphere[i].pos + timeStep*m_sSphere[i].vel;
 			m_sSphere[i].vel = m_sSphere[i].vel + timeStep*m_fAcceleration;
 		}
+
+		detectCollisionSimple();
 		break; 
 	case 1: break; 
 	case 2: break;
@@ -165,14 +169,60 @@ void SphereSystemSimulator::detectCollisionSimple()
 			}
 			else
 			{
+				
 				d = m_sSphere[i].pos.squaredDistanceTo(m_sSphere[j].pos);
 				if (d < 2 * m_fRadius)
 				{
-					//m_iKernel(d);
+					m_sSphere[i].rep_force = m_iKernel<1>(d);
+					m_sSphere[j].rep_force = m_iKernel<1>(d);
 				}
 			}
 		}
 	}
+}
+
+void SphereSystemSimulator::detectBoxCollision(int i)
+{
+	 
+		if ((m_sSphere[i].pos.x + m_fRadius) >= 0.5f)
+		{
+			//Collision mit Rechts
+			m_sSphere[i].pos.x = 0.5f - m_fRadius;
+			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+
+		}
+		if ((m_sSphere[i].pos.x + m_fRadius) <= -0.5f)
+		{
+			//Collision mit Links
+			m_sSphere[i].pos.x = -0.5f + m_fRadius;
+			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+		}
+
+		if ((m_sSphere[i].pos.y + m_fRadius) >= 0.5f)
+		{
+			//Collision mit Oben
+			m_sSphere[i].pos.y = 0.5f - m_fRadius;
+			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+		}
+		if ((m_sSphere[i].pos.y + m_fRadius) <= -0.5f)
+		{
+			//Collision mit Unten
+			m_sSphere[i].pos.y = -0.5f + m_fRadius;
+			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+		}
+
+		if ((m_sSphere[i].pos.z + m_fRadius) >= 0.5f)
+		{
+			//Collision mit Vorne
+			m_sSphere[i].pos.z = 0.5f - m_fRadius;
+			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+		}
+		if ((m_sSphere[i].pos.z + m_fRadius) <= -0.5f)
+		{
+			//Collision mit Hinten
+			m_sSphere[i].pos.z = -0.5f + m_fRadius;
+			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+		}
 }
 
 void SphereSystemSimulator::onClick(int x, int y)
