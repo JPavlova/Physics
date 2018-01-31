@@ -23,7 +23,7 @@ public:
 
 	//My Functions 
 	void detectBoxCollision(int i);
-	void detectCollisionSimple();
+	void detectCollisionSimple(int i);
 	void detectCollisionBoundries();
 
 	struct sphere {

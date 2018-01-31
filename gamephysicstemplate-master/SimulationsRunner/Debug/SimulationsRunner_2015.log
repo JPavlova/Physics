@@ -1,14 +1,1 @@
-﻿  main.cpp
-c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): warning C4005: 'NOMINMAX': macro redefinition
-  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): note: command-line arguments:  see previous definition of 'NOMINMAX'
-c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\main.cpp(43): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(204): warning C4244: 'argument': conversion from 'const GamePhysics::Real' to 'float', possible loss of data
-  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(203): note: while compiling class template member function 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const'
-  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(285): note: see reference to function template instantiation 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const' being compiled
-  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(859): note: see reference to class template instantiation 'GamePhysics::vector3Dim<GamePhysics::Real>' being compiled
-c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\matrixbase.h(777): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\matrixbase.h(773): note: while compiling class template member function 'DirectX::XMMATRIX GamePhysics::matrix4x4<double>::toDirectXMatrix(void)'
-  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(380): note: see reference to function template instantiation 'DirectX::XMMATRIX GamePhysics::matrix4x4<double>::toDirectXMatrix(void)' being compiled
-  c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(379): note: see reference to class template instantiation 'GamePhysics::matrix4x4<double>' being compiled
-  SimulationsRunner_2015.vcxproj -> C:\Studium\9.Semester\_Physics\Physics\gamephysicstemplate-master\Win32\Debug\SimulationsRunner_2015.exe
-  SimulationsRunner_2015.vcxproj -> C:\Studium\9.Semester\_Physics\Physics\gamephysicstemplate-master\Win32\Debug\SimulationsRunner_2015.pdb (Full PDB)
+﻿  SimulationsRunner_2015.vcxproj -> C:\Unizeug\Jenias Physics\Physics\gamephysicstemplate-master\Win32\Debug\SimulationsRunner_2015.exe
