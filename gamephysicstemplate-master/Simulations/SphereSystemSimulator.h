@@ -24,7 +24,7 @@ public:
 	//My Functions 
 	void detectBoxCollision(int i);
 	void detectCollisionSimple(int i);
-	void detectCollisionBoundries();
+	void detectCollisionBoundries(int i, int j);
 
 	struct sphere {
 		Vec3 pos;

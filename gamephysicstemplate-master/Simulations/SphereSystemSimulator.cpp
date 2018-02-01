@@ -136,8 +136,6 @@ void SphereSystemSimulator::simulateTimestep(float timeStep)
 
 			
 			m_sSphere[i].pos = m_sSphere[i].pos + (timeStep / 2)*m_sSphere[i].vel;
-			detectBoxCollision(i);
-			detectCollisionSimple(i);
 			m_sSphere[i].vel = m_sSphere[i].vel + (timeStep / 2)*m_fAcceleration;
 
 			
@@ -177,61 +175,65 @@ void SphereSystemSimulator::detectCollisionSimple(int i)
 			{
 				tmp = m_sSphere[i].pos - m_sSphere[j].pos; 
 				tmp = tmp / d;
-				m_sSphere[i].rep_force -= tmp*m_iKernel<1>(d);
-				m_sSphere[j].rep_force -=tmp*m_iKernel<1>(d);
-
-				//Positionskorrektur
-				/*m_sSphere[i].pos += tmp/m_fRadius;
-				m_sSphere[j].pos -= tmp/m_fRadius;*/
-
-
+				m_sSphere[i].rep_force += tmp*1.0f/d*d;
+				m_sSphere[j].rep_force -= tmp*1.0f/d*d;
+			
 			}
 		}
 	}
 	
 }
 
+void SphereSystemSimulator::detectCollisionBoundries(int i, int j)
+{
+	float tmp;
+	tmp = m_sSphere[i].pos.squaredDistanceTo(m_sSphere[j].pos);
+	if (tmp > m_fRadius * 2)
+	{
+
+	}
+}
+
 void SphereSystemSimulator::detectBoxCollision(int i)
 {
-	 
 		if ((m_sSphere[i].pos.x + m_fRadius) >= 0.5f)
 		{
 			//Collision mit Rechts
 			m_sSphere[i].pos.x = 0.5f - m_fRadius;
-			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+			m_sSphere[i].rep_force -= Vec3(1/pow(m_fRadius,2),0,0);
 
 		}
 		if ((m_sSphere[i].pos.x - m_fRadius) <= -0.5f)
 		{
 			//Collision mit Links
 			m_sSphere[i].pos.x = -0.5f + m_fRadius;
-			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+			m_sSphere[i].rep_force += Vec3(1 / pow(m_fRadius, 2),0,0);
 		}
 
 		if ((m_sSphere[i].pos.y + m_fRadius) >= 0.5f)
 		{
 			//Collision mit Oben
 			m_sSphere[i].pos.y = 0.5f - m_fRadius;
-			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+			m_sSphere[i].rep_force -= Vec3(0, 1 / pow(m_fRadius, 2),0);
 		}
 		if ((m_sSphere[i].pos.y - m_fRadius) <= -0.5f)
 		{
 			//Collision mit Unten
 			m_sSphere[i].pos.y = -0.5f + m_fRadius;
-			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+			m_sSphere[i].rep_force += Vec3(0, 1 / pow(m_fRadius, 2),0);
 		}
 
 		if ((m_sSphere[i].pos.z + m_fRadius) >= 0.5f)
 		{
 			//Collision mit Vorne
 			m_sSphere[i].pos.z = 0.5f - m_fRadius;
-			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+			m_sSphere[i].rep_force -= Vec3(0,0, 1 / pow(m_fRadius, 2));
 		}
 		if ((m_sSphere[i].pos.z - m_fRadius) <= -0.5f)
 		{
 			//Collision mit Hinten
 			m_sSphere[i].pos.z = -0.5f + m_fRadius;
-			m_sSphere[i].rep_force += m_iKernel<1>(m_fRadius);
+			m_sSphere[i].rep_force += Vec3(0,0, 1 / pow(m_fRadius, 2));
 		}
 }
 
