@@ -24,12 +24,12 @@ public:
 	//My Functions 
 	void detectBoxCollision(int i);
 	void detectCollisionSimple(int i);
-	void detectCollisionBoundries(int i, int j);
+	void detectCollisionGrid(int i);
 
 	struct sphere {
 		Vec3 pos;
 		Vec3 vel;
-		Vec3 rep_force;
+		Vec3 force;
 	};
 	
 protected:

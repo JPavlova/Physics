@@ -1,10 +1,11 @@
 ﻿  SphereSystemSimulator.cpp
 c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): warning C4005: 'NOMINMAX': macro redefinition
   c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(11): note: command-line arguments:  see previous definition of 'NOMINMAX'
-c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(113): warning C4018: '<': signed/unsigned mismatch
-c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(124): warning C4018: '>': signed/unsigned mismatch
-c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(173): warning C4244: '=': conversion from 'GamePhysics::Real' to 'float', possible loss of data
-c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(190): warning C4244: '=': conversion from 'GamePhysics::Real' to 'float', possible loss of data
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(124): warning C4018: '<': signed/unsigned mismatch
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(135): warning C4018: '>': signed/unsigned mismatch
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(160): warning C4018: '<': signed/unsigned mismatch
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(171): warning C4018: '>': signed/unsigned mismatch
+c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\spheresystemsimulator.cpp(208): warning C4244: '=': conversion from 'GamePhysics::Real' to 'float', possible loss of data
 c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(204): warning C4244: 'argument': conversion from 'const GamePhysics::Real' to 'float', possible loss of data
   c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\util\vectorbase.h(203): note: while compiling class template member function 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const'
   c:\studium\9.semester\_physics\physics\gamephysicstemplate-master\simulations\drawingutilitiesclass.h(285): note: see reference to function template instantiation 'DirectX::XMVECTOR GamePhysics::vector3Dim<GamePhysics::Real>::toDirectXVector(void) const' being compiled

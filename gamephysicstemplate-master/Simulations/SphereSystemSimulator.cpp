@@ -23,7 +23,7 @@ SphereSystemSimulator::SphereSystemSimulator()
 
 const char* SphereSystemSimulator::getTestCasesStr()
 {
-	return "Force Brutale, Demo2, Demo3";
+	return "Force Brutale, Uniform Grid, Demo3";
 }
 
 void SphereSystemSimulator::initUI(DrawingUtilitiesClass * DUC)
@@ -67,7 +67,14 @@ void SphereSystemSimulator::drawFrame(ID3D11DeviceContext* pd3ImmediateContext)
 			DUC->drawSphere(Vec3(m_sSphere[i].pos.x /*+i*0.1f*/, m_sSphere[i].pos.y, m_sSphere[i].pos.z), Vec3(m_fRadius, m_fRadius, m_fRadius));
 		}
 		break;
+	case 1:
+		for (int i = 0; i < m_iNumSpheres; i++)
+		{
+			DUC->setUpLighting(Vec3(), 0.4*Vec3(1, 1, 1), 100, 0.6*Vec3(1, 1, 0));
+			DUC->drawSphere(Vec3(m_sSphere[i].pos.x , m_sSphere[i].pos.y, m_sSphere[i].pos.z), Vec3(m_fRadius, m_fRadius, m_fRadius));
+		}
 	}
+	
 }
 
 void SphereSystemSimulator::notifyCaseChanged(int testCase)
@@ -77,10 +84,14 @@ void SphereSystemSimulator::notifyCaseChanged(int testCase)
 	{
 	case 0:
 		m_iNumSpheres = 1; 
-		m_fMass = 2.0f;
+		m_fMass = 1.0f;
 		m_fRadius = 0.02f;
 		break;
-	case 1: break;
+	case 1: 
+		m_iNumSpheres = 1;
+		m_fMass = 1.0f;
+		m_fRadius = 0.05f;
+		break;
 	case 2: break; 
 	default: break;
 	}
@@ -127,32 +138,53 @@ void SphereSystemSimulator::simulateTimestep(float timeStep)
 			m_sSphere._Pop_back_n(diffSize);
 		}
 		
-		//Calculate Spheres
+		//Leap Frog
 		for (int i = 0; i < m_iNumSpheres; i++)
 		{
-
-			m_fForce = Vec3(0, -9.81f*m_fMass, 0) + m_externalForce;
-			m_fAcceleration = m_fForce / m_fMass;
-
-			
-			m_sSphere[i].pos = m_sSphere[i].pos + (timeStep / 2)*m_sSphere[i].vel;
-			m_sSphere[i].vel = m_sSphere[i].vel + (timeStep / 2)*m_fAcceleration;
-
-			
-			m_fForce -= m_sSphere[i].rep_force;
-			m_fAcceleration = m_fForce / m_fMass;
-
-			m_sSphere[i].pos = m_sSphere[i].pos + timeStep*m_sSphere[i].vel;
 			detectBoxCollision(i);
 			detectCollisionSimple(i);
-			m_sSphere[i].vel = m_sSphere[i].vel + timeStep*m_fAcceleration;
 
-			m_sSphere[i].rep_force = Vec3(0,0,0);
+			m_sSphere[i].force += Vec3(0, -9.81f*m_fMass, 0) + m_externalForce;
+			m_fAcceleration = m_sSphere[i].force / m_fMass;
+
+			m_sSphere[i].vel = m_sSphere[i].vel + timeStep*m_fAcceleration;
+			m_sSphere[i].pos = m_sSphere[i].pos + timeStep*m_sSphere[i].vel;
+
+			m_sSphere[i].force = Vec3(0, 0, 0);
+		}
+		break; 
+	case 1: 
+		if (m_sSphere.size() < m_iNumSpheres)
+		{
+			diffSize = m_iNumSpheres - m_sSphere.size();
+			for (int i = 0; i < diffSize; i++)
+			{
+				s.pos = Vec3(0, 0.4f, 0);
+
+				m_sSphere.push_back(s);
+			}
+			cout << m_sSphere.size() << "\n";
+		}
+		else if (m_sSphere.size() > m_iNumSpheres)
+		{
+			diffSize = m_sSphere.size() - m_iNumSpheres;
+			m_sSphere._Pop_back_n(diffSize);
 		}
 
-		
-		break; 
-	case 1: break; 
+		//Leap Frog
+		for (int i = 0; i < m_iNumSpheres; i++)
+		{
+			detectBoxCollision(i);
+			detectCollisionGrid(i);
+			m_sSphere[i].force += Vec3(0, -9.81f*m_fMass, 0) + m_externalForce;
+			m_fAcceleration = m_sSphere[i].force / m_fMass;
+
+			m_sSphere[i].vel = m_sSphere[i].vel + timeStep*m_fAcceleration;
+			m_sSphere[i].pos = m_sSphere[i].pos + timeStep*m_sSphere[i].vel;
+
+			m_sSphere[i].force = Vec3(0, 0, 0);
+		}
+		break;
 	case 2: break;
 	default: break;
 	}
@@ -160,8 +192,9 @@ void SphereSystemSimulator::simulateTimestep(float timeStep)
 
 void SphereSystemSimulator::detectCollisionSimple(int i)
 {
-	float d;
-	Vec3 tmp;
+	float d; 
+	Vec3 tmp; 
+
 	for (int j = 0; j < m_iNumSpheres; j++)
 	{
 		if (i == j)
@@ -169,29 +202,22 @@ void SphereSystemSimulator::detectCollisionSimple(int i)
 			break;
 		}
 		else
-		{				
+		{
 			d = m_sSphere[i].pos.squaredDistanceTo(m_sSphere[j].pos);
 			if (d < 2 * m_fRadius)
 			{
-				tmp = m_sSphere[i].pos - m_sSphere[j].pos; 
+				tmp = m_sSphere[i].pos - m_sSphere[j].pos;
 				tmp = tmp / d;
-				m_sSphere[i].rep_force += tmp*1.0f/d*d;
-				m_sSphere[j].rep_force -= tmp*1.0f/d*d;
-			
+				m_sSphere[i].force = tmp*1.0f*(1 - d / 2 * m_fRadius);
+				m_sSphere[j].force = tmp*-1.0f*(1 - d / 2 * m_fRadius);
 			}
 		}
 	}
-	
 }
 
-void SphereSystemSimulator::detectCollisionBoundries(int i, int j)
+void SphereSystemSimulator::detectCollisionGrid(int i)
 {
-	float tmp;
-	tmp = m_sSphere[i].pos.squaredDistanceTo(m_sSphere[j].pos);
-	if (tmp > m_fRadius * 2)
-	{
 
-	}
 }
 
 void SphereSystemSimulator::detectBoxCollision(int i)
@@ -200,40 +226,40 @@ void SphereSystemSimulator::detectBoxCollision(int i)
 		{
 			//Collision mit Rechts
 			m_sSphere[i].pos.x = 0.5f - m_fRadius;
-			m_sSphere[i].rep_force -= Vec3(1/pow(m_fRadius,2),0,0);
+			m_sSphere[i].force-= Vec3(1/pow(m_fRadius,2),0,0);
 
 		}
 		if ((m_sSphere[i].pos.x - m_fRadius) <= -0.5f)
 		{
 			//Collision mit Links
 			m_sSphere[i].pos.x = -0.5f + m_fRadius;
-			m_sSphere[i].rep_force += Vec3(1 / pow(m_fRadius, 2),0,0);
+			m_sSphere[i].force += Vec3(1 / pow(m_fRadius, 2),0,0);
 		}
 
 		if ((m_sSphere[i].pos.y + m_fRadius) >= 0.5f)
 		{
 			//Collision mit Oben
 			m_sSphere[i].pos.y = 0.5f - m_fRadius;
-			m_sSphere[i].rep_force -= Vec3(0, 1 / pow(m_fRadius, 2),0);
+			m_sSphere[i].force -= Vec3(0, 1 / pow(m_fRadius, 2),0);
 		}
 		if ((m_sSphere[i].pos.y - m_fRadius) <= -0.5f)
 		{
-			//Collision mit Unten
+			//Collision mit Unten	
 			m_sSphere[i].pos.y = -0.5f + m_fRadius;
-			m_sSphere[i].rep_force += Vec3(0, 1 / pow(m_fRadius, 2),0);
+			m_sSphere[i].force += Vec3(0, 1 / pow(m_fRadius, 2),0); //Fun Balls
 		}
 
 		if ((m_sSphere[i].pos.z + m_fRadius) >= 0.5f)
 		{
 			//Collision mit Vorne
 			m_sSphere[i].pos.z = 0.5f - m_fRadius;
-			m_sSphere[i].rep_force -= Vec3(0,0, 1 / pow(m_fRadius, 2));
+			m_sSphere[i].force -= Vec3(0,0, 1 / pow(m_fRadius, 2));
 		}
 		if ((m_sSphere[i].pos.z - m_fRadius) <= -0.5f)
 		{
 			//Collision mit Hinten
 			m_sSphere[i].pos.z = -0.5f + m_fRadius;
-			m_sSphere[i].rep_force += Vec3(0,0, 1 / pow(m_fRadius, 2));
+			m_sSphere[i].force += Vec3(0,0, 1 / pow(m_fRadius, 2));
 		}
 }
 
