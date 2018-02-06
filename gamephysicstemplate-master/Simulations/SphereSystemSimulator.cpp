@@ -171,11 +171,13 @@ void SphereSystemSimulator::simulateTimestep(float timeStep)
 			m_sSphere._Pop_back_n(diffSize);
 		}
 
+		//Place Spheres in Grid & Detect Collision;
+
 		//Leap Frog
 		for (int i = 0; i < m_iNumSpheres; i++)
 		{
 			detectBoxCollision(i);
-			detectCollisionGrid(i);
+		
 			m_sSphere[i].force += Vec3(0, -9.81f*m_fMass, 0) + m_externalForce;
 			m_fAcceleration = m_sSphere[i].force / m_fMass;
 
@@ -215,9 +217,19 @@ void SphereSystemSimulator::detectCollisionSimple(int i)
 	}
 }
 
-void SphereSystemSimulator::detectCollisionGrid(int i)
+void SphereSystemSimulator::detectCollisionGrid(int i, int j)
 {
+	float d; 
+	Vec3 tmp; 
 
+	d = m_sSphere[i].pos.squaredDistanceTo(m_sSphere[j].pos);
+	if (d < 2 * m_fRadius)
+	{
+		tmp = m_sSphere[i].pos - m_sSphere[j].pos;
+		tmp = tmp / d;
+		m_sSphere[i].force = tmp*1.0f*(1 - d / 2 * m_fRadius);
+		m_sSphere[j].force = tmp*-1.0f*(1 - d / 2 * m_fRadius);
+	}
 }
 
 void SphereSystemSimulator::detectBoxCollision(int i)

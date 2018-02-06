@@ -24,7 +24,14 @@ public:
 	//My Functions 
 	void detectBoxCollision(int i);
 	void detectCollisionSimple(int i);
-	void detectCollisionGrid(int i);
+	void detectCollisionGrid(int i, int j);
+	void makeGrid();
+
+	struct grid {
+		int num_sphere; 
+		vector<int> spheres; 
+		Vec3 borders;
+	};
 
 	struct sphere {
 		Vec3 pos;
